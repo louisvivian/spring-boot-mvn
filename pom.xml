@@ -8,6 +8,7 @@
         <version>2.1.1.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
     <groupId>com.louis.service</groupId>
     <artifactId>spring-boot-mvn</artifactId>
     <version>1.0.0</version>
