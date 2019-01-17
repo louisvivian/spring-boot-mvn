@@ -18,4 +18,9 @@ public class DockerController {
     public String helloDocker(){
         return "docker coming";
     }
+
+    @GetMapping("/mvn")
+    public String helloMaven(){
+        return "maven coming";
+    }
 }

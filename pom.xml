@@ -11,7 +11,7 @@
 
     <groupId>com.louis.service</groupId>
     <artifactId>spring-boot-mvn</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <name>spring-boot-mvn</name>
     <packaging>jar</packaging>
     <description>spring-boot-mvn project for Spring Boot</description>
