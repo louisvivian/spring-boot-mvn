@@ -16,23 +16,34 @@ import org.springframework.stereotype.Service;
 @Service
 public class RabbitMqServiceImpl implements RabbitTemplate.ConfirmCallback {
 
-    @Value("${rabbitmq.queue.msg}")
-    private String msgQueueName;
+//    @Value("${rabbitmq.queue.msg}")
+//    private String msgQueueName;
+
+    @Value("${rabbitmq.exchange.name}")
+    private String exchangeName;
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
 
-    public void sendMsg(String msg) {
+//    public void sendMsg(String msg) {
+//        System.out.printf("发送消息：" + msg + "\n");
+//        // 设置回调
+//        rabbitTemplate.setConfirmCallback(this);
+//        if ("123".equals(msg)) {
+//            // 发送消息，通过msgQueueName确定队列
+//            rabbitTemplate.convertAndSend(msgQueueName, msg);
+//        } else {
+//            System.out.printf("没有发送\n");
+//        }
+//    }
+
+
+    public void sendMsg(String exchange, String routingKey, String msg) {
         System.out.printf("发送消息：" + msg + "\n");
-        // 设置回调
         rabbitTemplate.setConfirmCallback(this);
-        if ("123".equals(msg)) {
-            // 发送消息，通过msgQueueName确定队列
-            rabbitTemplate.convertAndSend(msgQueueName, msg);
-        } else {
-            System.out.printf("没有发送\n");
-        }
+        rabbitTemplate.convertAndSend(exchange, routingKey, msg);
+        System.out.printf("消息发送完毕\n");
     }
 
     /**
@@ -46,9 +57,9 @@ public class RabbitMqServiceImpl implements RabbitTemplate.ConfirmCallback {
     public void confirm(CorrelationData correlationData, boolean ack, String cause) {
         System.out.printf("开始确认\n");
         if (ack) {
-            System.out.println("消息id为: " + correlationData + "的消息，已经被ack成功\n");
+            System.out.println("消息id为: " + correlationData + "的消息，已经已到达交换机\n");
         } else {
-            System.out.println("消息id为: " + correlationData + "的消息，消息nack，失败原因是：" + cause + "\n");
+            System.out.println("消息id为: " + correlationData + "的消息，没有到达交换机，失败原因是：" + cause + "\n");
         }
     }
 }

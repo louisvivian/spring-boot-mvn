@@ -28,18 +28,22 @@ public class RabbitMqReceiver {
      * @param deliveryTag 投递标签
      * @throws IOException
      */
-    @RabbitListener(queues = {"${rabbitmq.queue.msg}"})
+    @RabbitListener(queues = {"${rabbitmq.queue.name}"})
     @RabbitHandler
     public void receiveMsg(Message message, Channel channel, String msg, @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag) throws IOException {
         System.out.printf("收到消息：" + message + "\n");
         System.out.printf("收到消息：" + msg + "\n");
 
-        if ("123".equals(msg)) {
-            System.out.printf("接受消息：" + msg + "\n");
-            channel.basicAck(deliveryTag, false);
-        } else {
-            System.out.printf("拒绝消息：" + msg + "\n");
-            channel.basicNack(deliveryTag, false, false);
+        channel.basicAck(deliveryTag, false);
+
+
+//        if ("123".equals(msg)) {
+//            System.out.printf("接受消息：" + msg + "\n");
+//            channel.basicAck(deliveryTag, false);
+//        } else {
+//            System.out.printf("拒绝消息：" + msg + "\n");
+//            channel.basicNack(deliveryTag, false, false);
+//        }
 //            channel.basicReject(deliveryTag, false);
 
 //            channel.basicAck(deliveryTag, false);
@@ -54,7 +58,5 @@ public class RabbitMqReceiver {
 //            channel.basicReject(deliveryTag:, false);
 //            deliveryTag:该消息的index
 //            requeue：被拒绝的是否重新入队列
-
-        }
     }
 }

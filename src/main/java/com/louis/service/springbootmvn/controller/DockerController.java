@@ -53,9 +53,21 @@ public class DockerController {
         return "async";
     }
 
-    @GetMapping("/rabbit_msg")
-    public String sendMsg(String msg) {
-        rabbitMqService.sendMsg(msg);
+    /**
+     * RabbitMq 测试
+     * http://localhost:8100/docker/rabbit_msg/louis-test-ex-direct/test1/123666
+     *
+     * @param exchange
+     * @param routingKey
+     * @param msg
+     * @return
+     */
+    @GetMapping("/rabbit_msg/{exchange}/{routing_key}/{msg}")
+    public String sendMsg(
+            @PathVariable(value = "exchange", required = true) String exchange,
+            @PathVariable(value = "routing_key", required = true) String routingKey,
+            @PathVariable(value = "msg", required = true) String msg) {
+        rabbitMqService.sendMsg(exchange, routingKey, msg);
         return "rabbit-test";
     }
 
