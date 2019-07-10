@@ -24,15 +24,14 @@ public class RabbitMqReceiver {
      *
      * @param message     所有信息都在里面
      * @param channel     信道
-     * @param msg         body信息
      * @param deliveryTag 投递标签
      * @throws IOException
      */
     @RabbitListener(queues = {"${rabbitmq.queue.name}"})
     @RabbitHandler
-    public void receiveMsg(Message message, Channel channel, String msg, @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag) throws IOException {
-        System.out.printf("收到消息：" + message + "\n");
-        System.out.printf("收到消息：" + msg + "\n");
+    public void receiveMsg(Message message, Channel channel, @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag) throws IOException {
+        System.out.printf("receiveMsg----收到消息：" + message + "\n");
+        System.out.printf("receiveMsg----收到消息：" + new String(message.getBody()) + "\n");
 
         channel.basicAck(deliveryTag, false);
 

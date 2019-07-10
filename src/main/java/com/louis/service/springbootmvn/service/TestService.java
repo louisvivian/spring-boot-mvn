@@ -22,17 +22,18 @@ public class TestService {
         System.out.printf("报表线程名：" + Thread.currentThread().getName());
     }
 
-    @Scheduled(cron = "0/5 * * * * ?")
-    @Async
-    public void getScheduler1() {
-        System.out.printf("线程：" + Thread.currentThread().getName() + "。任务：1。执行次数：" + iCount1 + "\n");
-        iCount1++;
-    }
-
-    @Scheduled(cron = "0/5 * * * * ?")
-    @Async
-    public void getScheduler2() {
-        System.out.printf("线程：" + Thread.currentThread().getName() + "。任务：2。执行次数：" + iCount2 + "\n");
-        iCount2++;
-    }
+    // 下面是  定时任务 好用的哦
+//    @Scheduled(cron = "0/5 * * * * ?")
+//    @Async
+//    public void getScheduler1() {
+//        System.out.printf("线程：" + Thread.currentThread().getName() + "。任务：1。执行次数：" + iCount1 + "\n");
+//        iCount1++;
+//    }
+//
+//    @Scheduled(cron = "0/5 * * * * ?")
+//    @Async
+//    public void getScheduler2() {
+//        System.out.printf("线程：" + Thread.currentThread().getName() + "。任务：2。执行次数：" + iCount2 + "\n");
+//        iCount2++;
+//    }
 }
