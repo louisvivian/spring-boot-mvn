@@ -58,4 +58,43 @@ public class RabbitMqReceiver {
 //            deliveryTag:该消息的index
 //            requeue：被拒绝的是否重新入队列
     }
+
+
+    /**
+     * 消费正常队列
+     *
+     * @param message
+     * @param channel
+     * @param deliveryTag
+     * @throws IOException
+     */
+    @RabbitListener(queues = {"louis.normal.queue3"})
+    @RabbitHandler
+    public void receiveNormalMsgToDlx(Message message, Channel channel, @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag) throws IOException {
+        System.out.printf("正常队列收到消息：" + message + "\n");
+        System.out.printf("正常队列收到消息：" + new String(message.getBody()) + "\n");
+
+        channel.basicNack(deliveryTag, false, false);
+
+    }
+
+
+    /**
+     * 消费死信队列
+     *
+     * @param message
+     * @param channel
+     * @param deliveryTag
+     * @throws IOException
+     */
+    @RabbitListener(queues = {"dlx.queue"})
+    @RabbitHandler
+    public void receiveDlxMsg(Message message, Channel channel, @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag) throws IOException {
+        System.out.printf("死信队列收到消息：" + message + "\n");
+        System.out.printf("死信队列收到消息：" + new String(message.getBody()) + "\n");
+
+        channel.basicAck(deliveryTag, false);
+
+    }
+
 }
