@@ -9,6 +9,7 @@ import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * RabbitMqReceiver
@@ -32,6 +33,9 @@ public class RabbitMqReceiver {
     public void receiveMsg(Message message, Channel channel, @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag) throws IOException {
         System.out.printf("receiveMsg----收到消息：" + message + "\n");
         System.out.printf("receiveMsg----收到消息：" + new String(message.getBody()) + "\n");
+
+        Map<String, Object> header = message.getMessageProperties().getHeaders();
+        System.out.printf("receiveMsg----收到消息ID：" + header.get("spring_returned_message_correlation").toString() + "\n");
 
         channel.basicAck(deliveryTag, false);
 
@@ -68,15 +72,15 @@ public class RabbitMqReceiver {
      * @param deliveryTag
      * @throws IOException
      */
-    @RabbitListener(queues = {"louis.normal.queue3"})
-    @RabbitHandler
-    public void receiveNormalMsgToDlx(Message message, Channel channel, @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag) throws IOException {
-        System.out.printf("正常队列收到消息：" + message + "\n");
-        System.out.printf("正常队列收到消息：" + new String(message.getBody()) + "\n");
-
-        channel.basicNack(deliveryTag, false, false);
-
-    }
+//    @RabbitListener(queues = {"louis.normal.queue3"})
+//    @RabbitHandler
+//    public void receiveNormalMsgToDlx(Message message, Channel channel, @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag) throws IOException {
+//        System.out.printf("正常队列收到消息：" + message + "\n");
+//        System.out.printf("正常队列收到消息：" + new String(message.getBody()) + "\n");
+//
+//        channel.basicReject(deliveryTag, true);
+//
+//    }
 
 
     /**
@@ -87,14 +91,14 @@ public class RabbitMqReceiver {
      * @param deliveryTag
      * @throws IOException
      */
-    @RabbitListener(queues = {"dlx.queue"})
-    @RabbitHandler
-    public void receiveDlxMsg(Message message, Channel channel, @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag) throws IOException {
-        System.out.printf("死信队列收到消息：" + message + "\n");
-        System.out.printf("死信队列收到消息：" + new String(message.getBody()) + "\n");
-
-        channel.basicAck(deliveryTag, false);
-
-    }
+//    @RabbitListener(queues = {"dlx.queue"})
+//    @RabbitHandler
+//    public void receiveDlxMsg(Message message, Channel channel, @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag) throws IOException {
+//        System.out.printf("死信队列收到消息：" + message + "\n");
+//        System.out.printf("死信队列收到消息：" + new String(message.getBody()) + "\n");
+//
+//        channel.basicAck(deliveryTag, false);
+//
+//    }
 
 }

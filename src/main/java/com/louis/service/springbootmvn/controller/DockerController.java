@@ -79,4 +79,17 @@ public class DockerController {
         String s1 = this.getClass().getName();
         return ResponseEntity.status(HttpStatus.OK).body(s1);
     }
+
+
+    /**
+     * 消息补偿 接口
+     *
+     * @param msg
+     * @return
+     */
+    @GetMapping("/msg_resend/{msg}")
+    public String testOthers(@PathVariable(value = "msg", required = true) String msg) {
+        System.out.println("这个接口 被调用了哦哦哦哦------" + msg);
+        return "rabbit-test11111";
+    }
 }
