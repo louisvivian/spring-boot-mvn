@@ -36,6 +36,7 @@ public class RabbitMqConfig {
     public RabbitAdmin rabbitAdmin() {
         String strExchangeName = "normal.exchange.fanout";
         String strQueueName = "louis.normal.queue3";
+        String strQueueName2 = "louis.normal.queue2";
 
         RabbitAdmin rabbitAdmin = new RabbitAdmin(connectionFactory);
 
@@ -50,9 +51,17 @@ public class RabbitMqConfig {
 //        arguments.put("x-message-ttl", 30000);
         Queue itemQueue = QueueBuilder.durable(strQueueName).withArguments(arguments).build();
         rabbitAdmin.declareQueue(itemQueue);
+        Queue itemQueue2 = QueueBuilder.durable(strQueueName2).withArguments(arguments).build();
+        rabbitAdmin.declareQueue(itemQueue2);
+
 
         // 将队列和交换机绑定
         rabbitAdmin.declareBinding(BindingBuilder.bind(itemQueue).to(exchange).with("").noargs());
+        rabbitAdmin.declareBinding(BindingBuilder.bind(itemQueue2).to(exchange).with("").noargs());
+
+
+
         return rabbitAdmin;
     }
+
 }

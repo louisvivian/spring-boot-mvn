@@ -4,6 +4,7 @@ import com.louis.service.springbootmvn.aspect.WebLog;
 import com.louis.service.springbootmvn.service.RabbitMqServiceImpl;
 import com.louis.service.springbootmvn.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +27,12 @@ public class DockerController {
 
     @Autowired
     private RabbitMqServiceImpl rabbitMqService;
+
+    @Value("${MS_CONFIG_LABEL}")
+    private String msConfigLabel;
+
+    @Value("${tmall.refund.transporter.queue.requeue:true}")
+    private Boolean queueRequeue;
 
     @GetMapping("/hello")
     @WebLog(description = "denglu")
@@ -89,7 +96,9 @@ public class DockerController {
      */
     @GetMapping("/msg_resend/{msg}")
     public String testOthers(@PathVariable(value = "msg", required = true) String msg) {
-        System.out.println("这个接口 被调用了哦哦哦哦------" + msg);
+        System.out.println("这个接口 被调用了哦哦哦哦------" + msg+"-----"+msConfigLabel+queueRequeue);
         return "rabbit-test11111";
     }
+
+
 }
