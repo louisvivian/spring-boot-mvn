@@ -61,8 +61,18 @@ public class RabbitMqServiceImpl implements RabbitTemplate.ConfirmCallback, Rabb
         CorrelationData correlationId = new CorrelationData(UUID.randomUUID().toString());
         // 放到内存一份
         mqMessage.put(correlationId.getId(), msg);
+
+        // 消息持久化 设置 (无需设置 也可以持久化)
+//        MessagePostProcessor messagePostProcessor = message -> {
+//            message.getMessageProperties().setDeliveryMode(MessageDeliveryMode.PERSISTENT);
+//            return message;
+//        };
+
         // 发送
+//        rabbitTemplate.convertAndSend(exchange, routingKey, msg, messagePostProcessor, correlationId);
         rabbitTemplate.convertAndSend(exchange, routingKey, msg, correlationId);
+
+
         System.out.printf("sendMsg----消息发送完毕" + correlationId.toString() + "\n");
     }
 
