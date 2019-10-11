@@ -1,7 +1,9 @@
 package com.louis.service.springbootmvn.controller;
 
 import com.louis.service.springbootmvn.aspect.WebLog;
+import com.louis.service.springbootmvn.entity.MerchantStoreClassItemExtendEntity;
 import com.louis.service.springbootmvn.service.RabbitMqServiceImpl;
+import com.louis.service.springbootmvn.service.RedisService;
 import com.louis.service.springbootmvn.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * DockerController
@@ -27,6 +31,9 @@ public class DockerController {
 
     @Autowired
     private RabbitMqServiceImpl rabbitMqService;
+
+    @Autowired
+    private RedisService redisService;
 
     @Value("${MS_CONFIG_LABEL}")
     private String msConfigLabel;
@@ -96,8 +103,33 @@ public class DockerController {
      */
     @GetMapping("/msg_resend/{msg}")
     public String testOthers(@PathVariable(value = "msg", required = true) String msg) {
-        System.out.println("这个接口 被调用了哦哦哦哦------" + msg+"-----"+msConfigLabel+queueRequeue);
+        System.out.println("这个接口 被调用了哦哦哦哦------" + msg + "-----" + msConfigLabel + queueRequeue);
         return "rabbit-test11111";
+    }
+
+
+// redis ---------------------------------------------------------------------
+
+    /**
+     * http://localhost:8100/docker/100000005/8/136/38938/5588
+     *
+     * @param merchantId
+     * @param storeId
+     * @param classId
+     * @param itemId
+     * @param valueId
+     * @return
+     */
+    @GetMapping("/{merchant_id}/{store_id}/{class_id}/{item_id}/{value_id}")
+    public List<MerchantStoreClassItemExtendEntity> get(
+            @PathVariable(value = "merchant_id", required = true) Integer merchantId,
+            @PathVariable(value = "store_id", required = true) Integer storeId,
+            @PathVariable(value = "class_id", required = true) Integer classId,
+            @PathVariable(value = "item_id", required = true) Integer itemId,
+            @PathVariable(value = "value_id", required = true) Integer valueId
+    ) {
+        List<MerchantStoreClassItemExtendEntity> strRes = redisService.get(merchantId, storeId, classId, itemId, valueId);
+        return strRes;
     }
 
 
