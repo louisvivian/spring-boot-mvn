@@ -9,7 +9,6 @@ import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * RabbitMqReceiver
@@ -30,15 +29,17 @@ public class RabbitMqReceiver {
      */
     @RabbitListener(queues = {"${rabbitmq.queue.name}"})
     @RabbitHandler
-    public void receiveMsg(Message message, Channel channel, @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag) throws IOException {
+    public void receiveMsg(Message message, Channel channel, @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag) throws IOException, InterruptedException {
+        String s = new String(message.getBody());
         System.out.printf("receiveMsg----收到消息：" + message + "\n");
         System.out.printf("receiveMsg----收到消息：" + new String(message.getBody()) + "\n");
 
-        Map<String, Object> header = message.getMessageProperties().getHeaders();
-        System.out.printf("receiveMsg----收到消息ID：" + header.get("spring_returned_message_correlation").toString() + "\n");
+//        Map<String, Object> header = message.getMessageProperties().getHeaders();
+//        System.out.printf("receiveMsg----收到消息ID：" + header.get("spring_returned_message_correlation").toString() + "\n");
 
+
+        System.out.println(s);
         channel.basicAck(deliveryTag, false);
-
 
 //        if ("123".equals(msg)) {
 //            System.out.printf("接受消息：" + msg + "\n");

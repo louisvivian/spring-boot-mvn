@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -12,7 +11,6 @@ import java.util.Set;
  *
  * @author wangxing
  */
-//@Service
 @Component
 public class RedisRepository {
 
@@ -40,7 +38,7 @@ public class RedisRepository {
     /**
      * 获取 商品扩展信息列表
      */
-    public Set< String> getKeys(String keys) {
+    public Set<String> getKeys(String keys) {
         Set<String> stringList = redisTemplate.keys(keys);
         if (stringList == null) {
             return null;
