@@ -59,4 +59,13 @@ public class RedisRepository {
     public void delete(String key) {
         redisTemplate.delete(key);
     }
+
+    /**
+     * 批量 删除 Redis Key
+     *
+     * @param strings
+     */
+    public void deleteBatch(Set<String> strings) {
+        redisTemplate.delete(strings);
+    }
 }
