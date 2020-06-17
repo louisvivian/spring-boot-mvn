@@ -51,5 +51,23 @@ public class RedisService {
         return keyList;
     }
 
+    public void getIncr(){
+        String key = "louis01";
+        boolean b = redisRepository.hasKey(key);
+        System.out.println(b);
+        long incrRes = redisRepository.incr(key,2);
+        System.out.println(incrRes);
+
+        String keyValue = redisRepository.get(key);
+        System.out.println(keyValue);
+
+        long incrRes1 = redisRepository.incr(key,1);
+        System.out.println(incrRes1);
+
+        String keyValue1 = redisRepository.get(key);
+        System.out.println(keyValue1);
+
+    }
+
 
 }

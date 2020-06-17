@@ -108,6 +108,13 @@ public class DockerController {
     }
 
 
+    @GetMapping("/test_http")
+    public String testHttp() {
+        String s = testService.testHttp();
+        return s;
+    }
+
+
 // redis ---------------------------------------------------------------------
 
     /**
@@ -132,5 +139,13 @@ public class DockerController {
         return strRes;
     }
 
+
+    /**
+     * http://localhost:8100/docker/incr
+     */
+    @GetMapping("/incr")
+    public void getIncr() {
+        redisService.getIncr();
+    }
 
 }
